@@ -43,12 +43,10 @@ jobs:
           node-version: 12
 
       - name: Install Node.js dependencies
-        working-directory: ./api
-        run: npm ci
+        run: cd api && npm ci
 
       - name: Test
-        working-directory: ./api
-        run: npm run testOnly
+        run: cd api && npm run testOnly
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
