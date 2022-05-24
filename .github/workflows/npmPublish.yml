@@ -21,12 +21,12 @@ jobs:
       - run: npm ci
       - run: git config --global user.name 'Firebolt Caster'
       - run: git config --global user.email 'nilsbaumgartner@live.de'
-      - run: git status
       - run: npm version patch -m "[RELEASE] %s"
-      - run: git status
+      - run: git add .
       - run: git push
       - run: npm run _uploadWithoutPatch
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   gh-pages:
     if: ${{ github.event.workflow_run.conclusion == 'success' && !startsWith(github.event.head_commit.message, '[RELEASE]') }}
@@ -42,3 +42,5 @@ jobs:
       - run: git config --global user.name 'Firebolt Caster'
       - run: git config --global user.email 'nilsbaumgartner@live.de'
       - run: npm run deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
