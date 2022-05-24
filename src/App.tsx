@@ -50,10 +50,10 @@ function App() {
        {renderToolbar()}
         <ReactFlowProvider key={reloadNumber+1+""}>
         <div style={{display: "flex", flexDirection: "row", height: "100%"}}>
-            <div style={{display: "flex", flex: 3, backgroundColor: "blue"}}>
+            <div style={{display: "flex", flex: 3}}>
                 <Netzplan />
             </div>
-            <div style={{display: "flex", flex: 1, flexDirection: "column", backgroundColor: "red"}}>
+            <div style={{display: "flex", flex: 1, flexDirection: "column", backgroundColor: "#DDDDDD"}}>
                 <Sidebar nodeTypes={nodeTypes} />
             </div>
         </div>
