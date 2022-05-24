@@ -9,9 +9,6 @@ jobs:
   sonarcloud:
     name: SonarCloud
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./src/api
     steps:
       - uses: actions/checkout@v2
         with:
@@ -23,10 +20,10 @@ jobs:
           node-version: 12
 
       - name: Install Node.js dependencies
-        run: npm ci
+        run: cd ./src/api && npm ci
 
       - name: Test
-        run: npm run testOnly
+        run: cd ./src/api && npm run testOnly
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
