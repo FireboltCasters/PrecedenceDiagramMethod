@@ -17,6 +17,7 @@
     "_uploadWithoutPatch": "npm run _prepareUpload && npm run _uploadBuild && npm run clean",
     "upload": "npm version patch && npm run _uploadWithoutPatch",
     "release": "cp ./../../README.md ./README.md && release-it",
+    "releaseDry": "cp ./../../README.md ./README.md && release-it --dry-run",
     "releaseCI": "cp ./../../README.md ./README.md && release-it --npm.skipChecks",
     "clean": "rimraf ./build && gts clean",
     "lint": "gts lint",
