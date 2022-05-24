@@ -8,16 +8,14 @@
     "coverage": "jest --coverage",
     "test": "npm run build && npm run testOnly",
     "testOnly": "npm run coverage",
-    "start": "npm run build && node ./build/ignoreCoverage/development.js",
-    "_prepareBuild": "rm -rf ./build",
-    "build": "npm run _prepareBuild && rimraf ./build && tsc && cp package.json ./build && cp ./../../README.md ./build",
-    "dev": "nodemon",
-    "_prepareUpload": "npm run build && rimraf ./coverage && rimraf ./build/tests",
-    "_uploadBuild": "cd ./build && npm pack && npm publish && cd ..",
-    "_uploadWithoutPatch": "npm run _prepareUpload && npm run _uploadBuild && npm run clean",
+    "typescript": "tsc --noEmit",
+    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "build": "npm run fixNodeModules && bob build",
+    "prepare": "npm run build",
+    "release": "release-it",
+    "releaseCI": "npm run fixNodeModules && release-it --npm.skipChecks",
     "upload": "npm version patch && npm run _uploadWithoutPatch",
     "clean": "rimraf ./build && gts clean",
-    "lint": "gts lint",
     "fix": "gts fix",
     "setup": "npm install && node setup.js && rimraf setup.js setup.json"
   },
@@ -50,11 +48,30 @@
     "@types/node": "^16.0.0",
     "gts": "^3.1.0",
     "jest": "^27.0.6",
+    "@release-it/conventional-changelog": "^2.0.0",
     "nodemon": "^2.0.9",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.3",
+    "release-it": "^14.2.2",
     "ts-node": "^10.0.0",
     "typescript": "^4.3.5"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "[RELEASE] ${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular"
+      }
+    }
   },
   "dependencies": {
     "@babel/preset-typescript": "^7.14.5",
