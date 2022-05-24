@@ -7,7 +7,7 @@ import "primeicons/primeicons.css";
 import {Button} from "primereact/button";                                //icons
 import { Toolbar } from 'primereact/toolbar';
 import {SplitButton} from "primereact/splitbutton";
-import Flow from "./flow/Flow";
+import Flow from "./ignoreCoverage/flow/Flow";
 
 let graph = new PrecedenceGraph({});
 
