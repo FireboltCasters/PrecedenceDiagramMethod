@@ -1,6 +1,10 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {PrecedenceGraph} from "./api/src";
+
+let graph = new PrecedenceGraph({});
+
 
 function App() {
   return (
@@ -8,7 +12,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.tsx</code> and save to reload.
+          {graph.test()}
         </p>
         <a
           className="App-link"

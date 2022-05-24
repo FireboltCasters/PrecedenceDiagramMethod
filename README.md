@@ -1,46 +1,134 @@
-# Getting Started with Create React App
+<h2 align="center">
+    npm-template
+</h2>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+  <a href="https://badge.fury.io/js/precedence-diagram-method.svg"><img src="https://badge.fury.io/js/precedence-diagram-method.svg" alt="npm package" /></a>
+  <a href="https://img.shields.io/github/license/FireboltCasters/precedence-diagram-method"><img src="https://img.shields.io/github/license/FireboltCasters/precedence-diagram-method" alt="MIT" /></a>
+  <a href="https://img.shields.io/github/last-commit/FireboltCasters/precedence-diagram-method?logo=git"><img src="https://img.shields.io/github/last-commit/FireboltCasters/precedence-diagram-method?logo=git" alt="last commit" /></a>
+  <a href="https://www.npmjs.com/package/precedence-diagram-method"><img src="https://img.shields.io/npm/dm/precedence-diagram-method.svg" alt="downloads week" /></a>
+  <a href="https://www.npmjs.com/package/precedence-diagram-method"><img src="https://img.shields.io/npm/dt/precedence-diagram-method.svg" alt="downloads total" /></a>
+  <a href="https://github.com/FireboltCasters/precedence-diagram-method"><img src="https://shields.io/github/languages/code-size/FireboltCasters/precedence-diagram-method" alt="size" /></a>
+  <a href="https://david-dm.org/FireboltCasters/precedence-diagram-method"><img src="https://david-dm.org/FireboltCasters/precedence-diagram-method/status.svg" alt="dependencies" /></a>
+  <a href="https://app.fossa.com/projects/git%2Bgithub.com%2FFireboltCasters%2Fprecedence-diagram-method?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FFireboltCasters%2Fprecedence-diagram-method.svg?type=shield"/></a>
+  <a href="https://github.com/google/gts" alt="Google TypeScript Style"><img src="https://img.shields.io/badge/code%20style-google-blueviolet.svg"/></a>
+  <a href="https://shields.io/" alt="Google TypeScript Style"><img src="https://img.shields.io/badge/uses-TypeScript-blue.svg"/></a>
+  <a href="https://github.com/marketplace/actions/lint-action"><img src="https://img.shields.io/badge/uses-Lint%20Action-blue.svg"/></a>
+</p>
 
-## Available Scripts
+<p align="center">
+  <a href="https://github.com/FireboltCasters/precedence-diagram-method/actions/workflows/npmPublish.yml"><img src="https://github.com/FireboltCasters/precedence-diagram-method/actions/workflows/npmPublish.yml/badge.svg" alt="Npm publish" /></a>
+  <a href="https://github.com/FireboltCasters/precedence-diagram-method/actions/workflows/linter.yml"><img src="https://github.com/FireboltCasters/precedence-diagram-method/actions/workflows/linter.yml/badge.svg" alt="Build status" /></a>
+  <a href="https://sonarcloud.io/dashboard?id=FireboltCasters_PrecedenceDiagramMethod"><img src="https://sonarcloud.io/api/project_badges/measure?project=FireboltCasters_PrecedenceDiagramMethod&metric=alert_status" alt="Quality Gate" /></a>
+  <a href="https://sonarcloud.io/dashboard?id=FireboltCasters_PrecedenceDiagramMethod"><img src="https://sonarcloud.io/api/project_badges/measure?project=FireboltCasters_PrecedenceDiagramMethod&metric=bugs" alt="Bugs" /></a>
+  <a href="https://sonarcloud.io/dashboard?id=FireboltCasters_PrecedenceDiagramMethod"><img src="https://sonarcloud.io/api/project_badges/measure?project=FireboltCasters_PrecedenceDiagramMethod&metric=coverage" alt="Coverage" /></a>
+  <a href="https://sonarcloud.io/dashboard?id=FireboltCasters_PrecedenceDiagramMethod"><img src="https://sonarcloud.io/api/project_badges/measure?project=FireboltCasters_PrecedenceDiagramMethod&metric=code_smells" alt="Code Smells" /></a>
+  <a href="https://sonarcloud.io/dashboard?id=FireboltCasters_PrecedenceDiagramMethod"><img src="https://sonarcloud.io/api/project_badges/measure?project=FireboltCasters_PrecedenceDiagramMethod&metric=duplicated_lines_density" alt="Duplicated Lines (%)" /></a>
+  <a href="https://sonarcloud.io/dashboard?id=FireboltCasters_PrecedenceDiagramMethod"><img src="https://sonarcloud.io/api/project_badges/measure?project=FireboltCasters_PrecedenceDiagramMethod&metric=sqale_rating" alt="Maintainability Rating" /></a>
+  <a href="https://sonarcloud.io/dashboard?id=FireboltCasters_PrecedenceDiagramMethod"><img src="https://sonarcloud.io/api/project_badges/measure?project=FireboltCasters_PrecedenceDiagramMethod&metric=reliability_rating" alt="Reliability Rating" /></a>
+  <a href="https://sonarcloud.io/dashboard?id=FireboltCasters_PrecedenceDiagramMethod"><img src="https://sonarcloud.io/api/project_badges/measure?project=FireboltCasters_PrecedenceDiagramMethod&metric=security_rating" alt="Security Rating" /></a>
+  <a href="https://sonarcloud.io/dashboard?id=FireboltCasters_PrecedenceDiagramMethod"><img src="https://sonarcloud.io/api/project_badges/measure?project=FireboltCasters_PrecedenceDiagramMethod&metric=sqale_index" alt="Technical Debt" /></a>
+  <a href="https://sonarcloud.io/dashboard?id=FireboltCasters_PrecedenceDiagramMethod"><img src="https://sonarcloud.io/api/project_badges/measure?project=FireboltCasters_PrecedenceDiagramMethod&metric=vulnerabilities" alt="Vulnerabilities" /></a>
+</p>
 
-In the project directory, you can run:
+<p align="center">
+    npm-template
+</p>
 
-### `npm start`
+## About
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+A template for creating npm packages
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# How to setup your project
 
-### `npm test`
+1. Clone this repo or "use as template" and upload it to GitHub
+2. Setup GitHub Secrets
+2. Get your Sonar credentials
+3. Configure and run the setup script
+4. Configure Quality Gate in Sonar
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## 2. GitHub Secrets
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+If not done by your organisation you will need to define the following secrets for your repository or your organisation:
+- GITHUB_TOKEN
+- NPM_TOKEN
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+(Note: You will also need to add a secret for Sonar in step 3.)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## 3. Sonar
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Sonar Cloud will be used to analyse our project in terms of code-quality: https://en.wikipedia.org/wiki/Software_quality
+Therefore we need to get credentials for our project. Create a Sonar-Account if you dont have one (it is free).
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Visit: https://sonarcloud.io/
+- Select your profile or organisation.
+- Select the GitHub project: https://sonarcloud.io/projects/create
+- Configure "With GitHub Actions"
+- Follow Step 1: Add the secret to your repository
+- "Skip" step 2
+- Copy and paste the values of "sonar.projectKey" and "sonar.FireboltCasters" into the setup.json
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 4. Setup Script
 
-## Learn More
+For the correct upload to npm and sonar and keep everything working correctly, the package.json file needs to be setup correctly. This can be tedious, so that you only need to configure the setup.json file to match your project:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```javascript
+{
+  "package": {
+    "name": "<precedence-diagram-method>",
+    "description": "<packageDescription>",
+    "keywords": [
+      "npm-template"
+    ],
+    "repositoryURL": "https://github.com/FireboltCasters/npm-template.git",
+    "author": "Steffen Droppelmann",
+    "contributors": [
+      {
+        "name": "Nils Baumgartner",
+        "email": "nilsbaumgartner1994@gmail.com",
+        "url": "https://github.com/FireboltCasters"
+      },
+      {
+        "name": "Steffen Droppelmann",
+        "email": "steffen.droppelmann@gmail.com",
+        "url": "https://github.com/FireboltCasters"
+      }
+    ],
+    "license": "MIT"
+  },
+  "sonar": {
+    "projectKey": "ExampleKey",
+    "FireboltCasters": "ExampleOrganization"
+  }
+}
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Then, run the following command:
+(Note: After running this command, the setup files will be deleted)
+
+```
+npm run setup
+```
+
+## 5. Configure Quality Gate
+
+Push your current project to GitHub. After that you should see on GitHub under "Actions" that some GitHub-Actions are being executed. The Sonar-Action will firstly fail with:
+```
+ERROR: QUALITY GATE STATUS: FAILED
+```
+This is because we haven't told Sonarcloud how it should measure the Quality Gate.
+
+- Visit your project at: https://sonarcloud.io/projects/
+- Select: "Set New Code definition"
+- Select the code definition for your match. We recommend: "Previous version"
+- Re-Upload your some minor change in your GitRepo to the master
+
+
+## Contributors
+
+The FireboltCasters
+
+<a href="https://github.com/FireboltCasters/precedence-diagram-method"><img src="https://contrib.rocks/image?repo=FireboltCasters/precedence-diagram-method" alt="Contributors" /></a>
