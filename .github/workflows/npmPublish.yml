@@ -21,7 +21,9 @@ jobs:
       - run: npm ci
       - run: git config --global user.name 'Firebolt Caster'
       - run: git config --global user.email 'nilsbaumgartner@live.de'
+      - run: git status
       - run: npm version patch -m "[RELEASE] %s"
+      - run: git status
       - run: git push
       - run: npm run _uploadWithoutPatch
         env:
@@ -37,4 +39,6 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
       - run: cd ./src/api/ && npm ci
+      - run: git config --global user.name 'Firebolt Caster'
+      - run: git config --global user.email 'nilsbaumgartner@live.de'
       - run: npm run deploy
