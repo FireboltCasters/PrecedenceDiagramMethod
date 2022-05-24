@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/PrecedenceDiagramMethod/static/css/main.6635bc7f.css",
-    "main.js": "/PrecedenceDiagramMethod/static/js/main.b54ce25d.js",
+    "main.js": "/PrecedenceDiagramMethod/static/js/main.bc03448b.js",
     "static/js/787.28cb0dcd.chunk.js": "/PrecedenceDiagramMethod/static/js/787.28cb0dcd.chunk.js",
     "static/media/primeicons.svg": "/PrecedenceDiagramMethod/static/media/primeicons.c6e2053303524e39530c.svg",
     "static/media/primeicons.eot": "/PrecedenceDiagramMethod/static/media/primeicons.7fc4d8e224d1ff1b9c62.eot",
@@ -9,11 +9,11 @@
     "static/media/primeicons.ttf": "/PrecedenceDiagramMethod/static/media/primeicons.91bacab1f083f2795272.ttf",
     "index.html": "/PrecedenceDiagramMethod/index.html",
     "main.6635bc7f.css.map": "/PrecedenceDiagramMethod/static/css/main.6635bc7f.css.map",
-    "main.b54ce25d.js.map": "/PrecedenceDiagramMethod/static/js/main.b54ce25d.js.map",
+    "main.bc03448b.js.map": "/PrecedenceDiagramMethod/static/js/main.bc03448b.js.map",
     "787.28cb0dcd.chunk.js.map": "/PrecedenceDiagramMethod/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.6635bc7f.css",
-    "static/js/main.b54ce25d.js"
+    "static/js/main.bc03448b.js"
   ]
 }
