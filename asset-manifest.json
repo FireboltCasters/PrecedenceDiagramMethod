@@ -1,16 +1,20 @@
 {
   "files": {
-    "main.css": "/PrecedenceDiagramMethod/static/css/main.073c9b0a.css",
-    "main.js": "/PrecedenceDiagramMethod/static/js/main.db17aba2.js",
+    "main.css": "/PrecedenceDiagramMethod/static/css/main.254b51d8.css",
+    "main.js": "/PrecedenceDiagramMethod/static/js/main.c4fe33d4.js",
     "static/js/787.28cb0dcd.chunk.js": "/PrecedenceDiagramMethod/static/js/787.28cb0dcd.chunk.js",
+    "static/media/primeicons.svg": "/PrecedenceDiagramMethod/static/media/primeicons.c6e2053303524e39530c.svg",
+    "static/media/primeicons.eot": "/PrecedenceDiagramMethod/static/media/primeicons.7fc4d8e224d1ff1b9c62.eot",
+    "static/media/primeicons.woff": "/PrecedenceDiagramMethod/static/media/primeicons.449aa8c65cdc5c2a8686.woff",
+    "static/media/primeicons.ttf": "/PrecedenceDiagramMethod/static/media/primeicons.91bacab1f083f2795272.ttf",
     "static/media/logo.svg": "/PrecedenceDiagramMethod/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/PrecedenceDiagramMethod/index.html",
-    "main.073c9b0a.css.map": "/PrecedenceDiagramMethod/static/css/main.073c9b0a.css.map",
-    "main.db17aba2.js.map": "/PrecedenceDiagramMethod/static/js/main.db17aba2.js.map",
+    "main.254b51d8.css.map": "/PrecedenceDiagramMethod/static/css/main.254b51d8.css.map",
+    "main.c4fe33d4.js.map": "/PrecedenceDiagramMethod/static/js/main.c4fe33d4.js.map",
     "787.28cb0dcd.chunk.js.map": "/PrecedenceDiagramMethod/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.073c9b0a.css",
-    "static/js/main.db17aba2.js"
+    "static/css/main.254b51d8.css",
+    "static/js/main.c4fe33d4.js"
   ]
 }
