@@ -20,7 +20,7 @@ jobs:
       - run: cd ./src/api/ && npm ci
       - run: cd ./src/api/ && git config --global user.name 'Firebolt Caster'
       - run: cd ./src/api/ && git config --global user.email 'nilsbaumgartner@live.de'
-      - run: cd ./src/api/ && NEW_VERSION=$(npm version patch) && git add . && gut tag $NEW_VERSION && git commit -m "[RELEASE] $NEW_VERSION"
+      - run: cd ./src/api/ && NEW_VERSION=$(npm version patch) && git add . && git tag $NEW_VERSION && git commit -m "[RELEASE] $NEW_VERSION"
       - run: cd ./src/api/ && git push
       - run: cd ./src/api/ && npm run _uploadWithoutPatch
         env:
