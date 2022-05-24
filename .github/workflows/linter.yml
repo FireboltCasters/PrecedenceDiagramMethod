@@ -33,7 +33,6 @@ jobs:
     name: SonarCloud
     runs-on: ubuntu-latest
     steps:
-      - working-directory: ./api
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
@@ -44,9 +43,11 @@ jobs:
           node-version: 12
 
       - name: Install Node.js dependencies
+        working-directory: ./api
         run: npm ci
 
       - name: Test
+        working-directory: ./api
         run: npm run testOnly
 
       - name: SonarCloud Scan
