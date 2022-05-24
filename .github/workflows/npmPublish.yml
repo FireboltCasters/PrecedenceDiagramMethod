@@ -5,6 +5,8 @@ on:
     branches: [main]
     types:
       - completed
+permissions:
+  contents: write
 jobs:
   npm:
     if: ${{ github.event.workflow_run.conclusion == 'success' && !startsWith(github.event.head_commit.message, '[RELEASE]') }}
@@ -22,9 +24,13 @@ jobs:
       - run: git config --global user.name 'Firebolt Caster'
       - run: git config --global user.email 'nilsbaumgartner@live.de'
       - run: npm version patch -m "[RELEASE] %s"
+      - run: git status
       - run: git add .
+      - run: git status
       - run: git push
+      - run: git status
       - run: npm run _uploadWithoutPatch
+      - run: git status
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -38,9 +44,10 @@ jobs:
           node-version: '12.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
-      - run: cd ./src/api/ && npm ci
+      - run: cd ./src/api/ && npm ci && cd ../../
       - run: git config --global user.name 'Firebolt Caster'
       - run: git config --global user.email 'nilsbaumgartner@live.de'
       - run: npm run deploy
         env:
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
