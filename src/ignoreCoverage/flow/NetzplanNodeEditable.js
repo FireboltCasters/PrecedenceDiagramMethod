@@ -38,6 +38,12 @@ export class NetzplanNodeEditable extends Component {
         return component;
     }
 
+    static getNodeType(){
+        return {
+            [NetzplanNodeEditable.getNodeTypeName()]: NetzplanNodeEditable.getMemoRenderer(),
+        }
+    }
+
     static getLegendElement(){
         const position = { x: 0, y: 0 };
         return {

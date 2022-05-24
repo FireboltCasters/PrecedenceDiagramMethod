@@ -1,4 +1,4 @@
-import React, {useState, useRef, Component, FunctionComponent} from 'react';
+import React, {useState, useRef, Component, FunctionComponent, useEffect} from 'react';
 import ReactFlow, {
     addEdge,
 //    removeElements,
@@ -46,18 +46,21 @@ const getId = () => `Knoten_${id++}`;
 
 const NODE_HEIGHT = 100;
 
-const nodeTypes = {
-    [NetzplanNodeEditable.getNodeTypeName()]: NetzplanNodeEditable.getMemoRenderer(),
-};
-
 export const Netzplan : FunctionComponent = (props) => {
 
     const reactFlowWrapper = React.createRef<HTMLDivElement>();
+    const [nodeTypes, setNodetypes] = useState({});
     const [reloadNumber, setReloadNumber] = useState(0)
     const [reactFlowInstance, setReactFlowInstance] = useState(undefined)
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const onConnect = (params: any) => setEdges((eds) => addEdge(params, eds));
+
+    useEffect(() => {
+        const nodeTypes = Object.assign({}, NetzplanNodeEditable.getNodeType())
+        //@ts-ignore
+        setNodetypes(nodeTypes);
+    }, [])
 
     function autoLayoutElements(){
         let layoutedElements: any = GraphHelper.getLayoutedElements(nodes, GraphHelper.DEFAULT_NODE_WIDTH, NODE_HEIGHT);
