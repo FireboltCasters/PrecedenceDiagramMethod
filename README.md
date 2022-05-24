@@ -39,6 +39,10 @@
 
 A template for creating npm packages
 
+## Demo
+
+https://fireboltcasters.github.io/PrecedenceDiagramMethod/
+
 # How to setup your project
 
 1. Clone this repo or "use as template" and upload it to GitHub

@@ -1,6 +1,6 @@
 {
   "name": "precedence-diagram-method",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "An API to calculate the precedence diagram method",
   "main": "index.js",
   "types": "index.d.ts",
