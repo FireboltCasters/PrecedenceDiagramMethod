@@ -2,7 +2,7 @@ name: NPM Publish
 on:
   workflow_run:
     workflows: ["Check"]
-    branches: [master]
+    branches: [main]
     types:
       - completed
 jobs:
