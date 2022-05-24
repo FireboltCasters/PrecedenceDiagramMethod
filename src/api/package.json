@@ -1,6 +1,6 @@
 {
   "name": "precedence-diagram-method",
-  "version": "0.0.12",
+  "version": "0.0.15",
   "description": "An API to calculate the precedence diagram method",
   "main": "index.js",
   "types": "index.d.ts",
@@ -16,6 +16,7 @@
     "_uploadBuild": "cd ./build && npm pack && npm publish && cd ..",
     "_uploadWithoutPatch": "npm run _prepareUpload && npm run _uploadBuild && npm run clean",
     "upload": "npm version patch && npm run _uploadWithoutPatch",
+    "prepare": "npm run build",
     "release": "cp ./../../README.md ./README.md && release-it",
     "releaseDry": "cp ./../../README.md ./README.md && release-it --dry-run",
     "releaseCI": "cp ./../../README.md ./README.md && release-it --npm.skipChecks",

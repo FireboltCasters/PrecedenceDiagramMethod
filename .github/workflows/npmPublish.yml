@@ -18,10 +18,11 @@ jobs:
           node-version: '12.x'
           registry-url: 'https://registry.npmjs.org'
       - run: cd ./src/api/ && npm ci
-      - run: git config --global user.name 'Firebolt Caster'
-      - run: git config --global user.email 'nilsbaumgartner@live.de'
-      - run: cd ./src/api/ && git stash
-      - run: cd ./src/api/ && npm run releaseCI
+      - run: cd ./src/api/ && git config --global user.name 'Firebolt Caster'
+      - run: cd ./src/api/ && git config --global user.email 'nilsbaumgartner@live.de'
+      - run: cd ./src/api/ && NEW_VERSION=$(npm version patch) && git add . && gut tag $NEW_VERSION && git commit -m "[RELEASE] $NEW_VERSION"
+      - run: cd ./src/api/ && git push
+      - run: cd ./src/api/ && npm run _uploadWithoutPatch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
