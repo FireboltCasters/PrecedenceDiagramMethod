@@ -8,6 +8,10 @@ import {Button} from "primereact/button";                                //icons
 import { Toolbar } from 'primereact/toolbar';
 import {SplitButton} from "primereact/splitbutton";
 import Flow from "./ignoreCoverage/flow/Flow";
+import {ReactFlowProvider} from "react-flow-renderer";
+import {Sidebar} from "./ignoreCoverage/flow/Sidebar";
+import {NetzplanNodeEditable} from "./ignoreCoverage/flow/NetzplanNodeEditable";
+import {Netzplan} from "./ignoreCoverage/flow/Netzplan";
 
 let graph = new PrecedenceGraph({});
 
@@ -15,6 +19,11 @@ let graph = new PrecedenceGraph({});
 function App() {
 
   const [counter, setCounter] = useState(0)
+  const [reloadNumber, setReloadnumber] = useState(0)
+
+    const nodeTypes = {
+        [NetzplanNodeEditable.getNodeTypeName()]: NetzplanNodeEditable.getMemoRenderer(),
+    };
 
   function renderToolbar(){
     const leftContents = (
@@ -37,19 +46,18 @@ function App() {
   }
 
   return (
-    <div style={{width: "100%", height: "100vh"}}>
+    <div style={{width: "100%", height: "90vh"}}>
        {renderToolbar()}
-        <div style={{display: "flex", flexDirection: "row"}}>
-            <div style={{display: "flex", flex: 3, backgroundColor: "orange"}}>
-                HI
+        <ReactFlowProvider key={reloadNumber+1+""}>
+        <div style={{display: "flex", flexDirection: "row", height: "100%"}}>
+            <div style={{display: "flex", flex: 3, backgroundColor: "blue"}}>
+                <Netzplan />
             </div>
             <div style={{display: "flex", flex: 1, flexDirection: "column", backgroundColor: "red"}}>
-                <div>HI</div>
-                <div>HI</div>
-                <div>HI</div>
+                <Sidebar nodeTypes={nodeTypes} />
             </div>
         </div>
-       <Flow />
+        </ReactFlowProvider>
     </div>
   );
 }
