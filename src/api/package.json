@@ -1,6 +1,6 @@
 {
   "name": "precedence-diagram-method",
-  "version": "0.0.9",
+  "version": "0.0.12",
   "description": "An API to calculate the precedence diagram method",
   "main": "index.js",
   "types": "index.d.ts",
@@ -16,6 +16,8 @@
     "_uploadBuild": "cd ./build && npm pack && npm publish && cd ..",
     "_uploadWithoutPatch": "npm run _prepareUpload && npm run _uploadBuild && npm run clean",
     "upload": "npm version patch && npm run _uploadWithoutPatch",
+    "release": "cp ./../../README.md ./README.md && release-it",
+    "releaseCI": "cp ./../../README.md ./README.md && release-it --npm.skipChecks",
     "clean": "rimraf ./build && gts clean",
     "lint": "gts lint",
     "fix": "gts fix",
@@ -46,15 +48,34 @@
   },
   "homepage": "https://github.com/FireboltCasters/npm-template#readme",
   "devDependencies": {
+    "@release-it/conventional-changelog": "^5.0.0",
     "@types/jest": "^26.0.23",
     "@types/node": "^16.0.0",
     "gts": "^3.1.0",
     "jest": "^27.0.6",
     "nodemon": "^2.0.9",
+    "release-it": "^15.0.0",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.3",
     "ts-node": "^10.0.0",
     "typescript": "^4.3.5"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "[RELEASE] ${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular"
+      }
+    }
   },
   "dependencies": {
     "@babel/preset-typescript": "^7.14.5",

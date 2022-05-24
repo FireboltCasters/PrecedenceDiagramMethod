@@ -23,9 +23,8 @@ jobs:
       - run: npm ci
       - run: git config --global user.name 'Firebolt Caster'
       - run: git config --global user.email 'nilsbaumgartner@live.de'
-      - run: npm version patch -m "[RELEASE] %s"
-      - run: git push
-      - run: npm run _uploadWithoutPatch
+      - run: git stash
+      - run: npm run releaseCI
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
