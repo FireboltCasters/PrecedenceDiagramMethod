@@ -6,11 +6,25 @@ import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";
 import {Netzplan} from "./ignoreCoverage/flow/Netzplan";
 
-function App() {
-
-  return (
-    <Netzplan />
-  );
+export interface NetzplanInterface{
+  setNodeDuration: any,
+  setNodeLabel: any
 }
+export default class App extends React.Component<any, any> {
+  static netzplanRef: NetzplanInterface = {
+    setNodeDuration: undefined,
+    setNodeLabel: undefined
+  };
 
-export default App;
+  constructor(props: any) {
+    super(props);
+    console.log("App Constructor");
+    console.log(App.netzplanRef)
+  }
+
+  render(){
+    return (
+        <Netzplan />
+    );
+  }
+}

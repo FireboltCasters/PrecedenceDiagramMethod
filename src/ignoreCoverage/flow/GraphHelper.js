@@ -27,7 +27,7 @@ export class GraphHelper{
     static _layoutElements(dagreGraph, elements, nodeWidth=GraphHelper.DEFAULT_NODE_WIDTH, nodeHeight=GraphHelper.DEFAULT_NODE_HEIGHT){
         dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-        let direction = "LR"; //'LR'; 'TB';
+        let direction = "TB"; //'LR'; 'TB';
         dagreGraph.setGraph({ rankdir: direction });
 
         elements.forEach((el) => {

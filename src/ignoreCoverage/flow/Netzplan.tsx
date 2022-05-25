@@ -3,153 +3,136 @@ import ReactFlow, {
     addEdge,
 //    removeElements,
     Controls, isNode,
-    getOutgoers, isEdge, useEdgesState, useNodesState, ReactFlowProvider
+    Background,
+    getOutgoers, isEdge, useEdgesState, useNodesState, ReactFlowProvider, ReactFlowInstance
 } from 'react-flow-renderer';
 import {GraphHelper} from "./GraphHelper";
 import {NetzplanNodeEditable} from "./NetzplanNodeEditable";
 import {SidebarNodes} from "./SidebarNodes";
 import {MyToolbar} from "./MyToolbar";
 import NetzplanHelper from "./NetzplanHelper";
-
-const initNodeName = "init";
+import App from "../../App";
+import {PrecedenceGraph} from "../../api/src";
 
 const strokeWidth = 2;
 const edgeNormal = "#444444";
 const edgeCritical = "#ff2222";
 
 let id = 1;
-const getId = () => `Knoten_${id++}`;
+const getId = () => `Activity_${id++}`;
 
-const NODE_HEIGHT = 100;
 
 export const Netzplan : FunctionComponent = (props) => {
 
     const reactFlowWrapper = React.createRef<HTMLDivElement>();
     const [nodeTypes, setNodetypes] = useState({});
     const [reloadNumber, setReloadNumber] = useState(0)
-    const [reactFlowInstance, setReactFlowInstance] = useState(undefined)
+    const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance>()
+    //@ts-ignore
     const [nodes, setNodes, onNodesChange] = useNodesState(NetzplanHelper.initialNodes);
+    //@ts-ignore
     const [edges, setEdges, onEdgesChange] = useEdgesState(NetzplanHelper.initialEdges);
     const onConnect = (params: any) => setEdges((eds) => addEdge({animated: true ,...params}, eds));
 
-    useEffect(() => {
-        const nodeTypes = Object.assign({}, NetzplanNodeEditable.getNodeType())
-        //@ts-ignore
-        setNodetypes(nodeTypes);
-    }, [])
-
     function autoLayoutElements(){
-        let layoutedElements: any = GraphHelper.getLayoutedElements(nodes, GraphHelper.DEFAULT_NODE_WIDTH, NODE_HEIGHT);
+        let layoutedElements: any = GraphHelper.getLayoutedElements(nodes, GraphHelper.DEFAULT_NODE_WIDTH, NetzplanHelper.NODE_HEIGHT);
         updateReactFlowElements(layoutedElements);
     }
 
-    function getNetzplanJSONFromReactFlowElements(elements: any){
+    async function reset(){
+        //@ts-ignore
+        await setNodes(NetzplanHelper.initialNodes)
+        //@ts-ignore
+        await setEdges(NetzplanHelper.initialEdges)
+        if(reactFlowInstance!=null){
+            reactFlowInstance?.fitView()
+        }
+    }
+
+    function getNetzplanJSONFromReactFlowElements(){
         let graphJSON = {};
-        for(let i=0; i<elements.length; i++){
-            let element = elements[i];
-            if(isNode(element) && element.type == NetzplanNodeEditable.getNodeTypeName()){
-                let reactFlowChildren = getOutgoers(element, nodes, edges);
-                let children = [];
-                for(let j=0; j<reactFlowChildren.length; j++){
-                    let child = reactFlowChildren[j];
-                    children.push(child.id+"");
-                }
-                let label = element.id;
-                let data = element.data;
-                let graphElement = {
-                    children: children,
-                    duration: data.duration
-                }
-                //@ts-ignore
-                graphJSON[label] = graphElement;
+        for(let i=0; i<nodes.length; i++){
+            let element = nodes[i];
+            let reactFlowChildren = getOutgoers(element, nodes, edges);
+            let children = [];
+            for(let j=0; j<reactFlowChildren.length; j++){
+                let child = reactFlowChildren[j];
+                children.push(child.id+"");
             }
+            let label = element.id;
+            let data = element.data;
+            let graphElement = {
+                children: children,
+                //@ts-ignore
+                duration: data?.duration || 0
+            }
+            //@ts-ignore
+            graphJSON[label] = graphElement;
         }
         return graphJSON;
     }
 
-    function getNetzplanStartNodeFromReactFlowElements(elements: any){
-        let startNodeLabel = undefined;
-        for(let i=0; i<elements.length; i++){
-            let element = elements[i];
-            if(isNode(element) && element.id === initNodeName){
-                let reactFlowChildren = getOutgoers(element, nodes, edges);
-                if(reactFlowChildren.length===1){
-                    startNodeLabel = reactFlowChildren[0].id;
-                }
-            }
-        }
-        return startNodeLabel;
-    }
-
     function calcNetzplan(){
-        let startNodeLabel: any = getNetzplanStartNodeFromReactFlowElements(nodes);
-        if(!!startNodeLabel){
-            let graphJSON = getNetzplanJSONFromReactFlowElements(nodes);
-//            let calcedNetzplan = init(graphJSON, startNodeLabel);
-  //          this.updateElementsByCalcedNetzplan(calcedNetzplan);
-        }
+        console.log("calcNetzplan")
+        let startNodeLabel: string = NetzplanHelper.initNodeName;
+        console.log("startNodeLabel: ", startNodeLabel);
+        let graphJSON = getNetzplanJSONFromReactFlowElements();
+        console.log(graphJSON);
+        let precedenceGraph = new PrecedenceGraph(graphJSON, startNodeLabel);
+        console.log(precedenceGraph);
+        updateElementsByCalcedNetzplan(precedenceGraph.getGraph());
     }
 
-    function updateReactFlowElements(elements: any){
-        setNodes(elements)
-        setReloadNumber(reloadNumber+1);
+    function updateReactFlowElements(nodes: any){
+        setNodes(nodes)
+        //setReloadNumber(reloadNumber+1);
     }
 
     function updateElementsByCalcedNetzplan(calcedNetzplan: any){
-        let elements = nodes;
-        for(let i=0; i<elements.length; i++){
-            let element = elements[i];
-            if(isEdge(element)){
-                console.log(element);
-                let source = element.source;
-                let target = element.target;
-                let sourceNode = calcedNetzplan[source];
-                let targetNode = calcedNetzplan[target];
+        let newNodes = [];
+        for(let node of nodes){
+            let id = node.id;
+            let netzplanNode = calcedNetzplan[id];
+            //@ts-ignore
+            node.data.buffer = netzplanNode?.buffer;
+            //@ts-ignore
+            node.data.earliestStart = netzplanNode?.earliestStart;
+            //@ts-ignore
+            node.data.earliestEnd = netzplanNode?.earliestEnd;
+            //@ts-ignore
+            node.data.latestStart = netzplanNode?.latestStart;
+            //@ts-ignore
+            node.data.latestEnd = netzplanNode?.latestEnd;
+            newNodes.push(node);
+        }
 
-                if(!!sourceNode && !!targetNode){
-                    let isCritical = sourceNode.buffer === 0 && targetNode.buffer === 0;
-                    element.style = {};
-                    if(isCritical){
-                        element.style.stroke= edgeCritical;
-                    } else {
-                        element.style.stroke= edgeNormal;
-                    }
-                    element.style.strokeWidth = strokeWidth;
-                    elements[i] = element;
+        let newEdges = [];
+        for(let edge of edges){
+            let source = edge.source;
+            let target = edge.target;
+            let sourceNode = calcedNetzplan[source];
+            let targetNode = calcedNetzplan[target];
+
+            if(!!sourceNode && !!targetNode){
+                let isCritical = sourceNode?.buffer === 0 && targetNode?.buffer === 0;
+                edge.style = {};
+                if(isCritical){
+                    edge.style.stroke= edgeCritical;
+                } else {
+                    edge.style.stroke= edgeNormal;
                 }
+                edge.style.strokeWidth = strokeWidth;
             }
-            if(isNode(element) && element.type === NetzplanNodeEditable.getNodeTypeName()){
-                let id = element.id;
-                let netzplanNode = calcedNetzplan[id];
-                element.data.buffer = netzplanNode.buffer;
-                element.data.earliestStart = netzplanNode.earliestStart;
-                element.data.earliestEnd = netzplanNode.earliestEnd;
-                element.data.latestStart = netzplanNode.latestStart;
-                element.data.latestEnd = netzplanNode.latestEnd;
-                elements[i] = element;
-            }
+            newEdges.push(edge);
         }
-        updateReactFlowElements(elements);
-    }
 
-    /**
-    function onConnect = (params) => {
-        params.arrowHeadType = "arrowclosed";
-        let style = {
-            strokeWidth: strokeWidth,
-            stroke: edgeNormal,
-        }
-        params.style = style;
-        this.setState({
-            elements: addEdge(params, this.state.elements)
-        })
-    };
-     */
+        console.log("Finished applying")
+        console.log(newNodes)
+        console.log(newEdges);
 
-    function onElementsRemove(elementsToRemove: any) {
-  //      this.setState({
-    //        elements: removeElements(elementsToRemove, this.state.elements)
-      //  })
+        setNodes(newNodes);
+        setEdges(newEdges);
+        setReloadNumber(reloadNumber+1)
     }
 
     function onInit(_reactFlowInstance: any) {
@@ -184,7 +167,10 @@ export const Netzplan : FunctionComponent = (props) => {
             });
             let newId = getId();
 
-            data = Object.assign(data,{id: newId});
+            data = Object.assign(data,{id: newId, instance: {
+                    setNodeDuration: setNodeDuration,
+                    setNodeLabel: setNodeLabel,
+                }});
 
             const newNode = {
                 id: newId,
@@ -199,10 +185,12 @@ export const Netzplan : FunctionComponent = (props) => {
     async function setNodeDuration(nodeId: any, duration: any){
         setNodeDataProperty(nodeId, "duration", duration)
     }
+    App.netzplanRef.setNodeDuration = setNodeDuration
 
     async function setNodeLabel(nodeId: any, label: any){
         setNodeDataProperty(nodeId, "label", label)
     }
+    App.netzplanRef.setNodeLabel = setNodeLabel
 
     async function setNodeDataProperty(nodeId: any, key: any, value: any){
         let elementsCopy = nodes;
@@ -221,12 +209,30 @@ export const Netzplan : FunctionComponent = (props) => {
         updateReactFlowElements(newElements);
     }
 
+    function myOnNodesChange(nodesChanges: any){
+        let filteredChanges = []
+        for(let nodeChange of nodesChanges){
+            if(nodeChange.id===NetzplanHelper.initNodeName && nodeChange?.type==="remove"){
+                //prevent from deletion
+            } else {
+                filteredChanges.push(nodeChange)
+            }
+        }
+        onNodesChange(filteredChanges);
+    }
+
+    useEffect(() => {
+        const nodeTypes = Object.assign({}, NetzplanNodeEditable.getNodeType())
+        //@ts-ignore
+        setNodetypes(nodeTypes);
+    }, [])
+
         let height = 700;
 
         return (
             <ReactFlowProvider key={reloadNumber+1+""}>
                 <div style={{width: "100%", height: "10vh"}}>
-                    <MyToolbar />
+                    <MyToolbar handleCalc={calcNetzplan} handleLayout={autoLayoutElements} handleClear={reset} nodes={nodes} edges={edges} setNodes={setNodes} setEdges={setEdges} />
                 </div>
                 <div style={{width: "100%", height: "90vh"}}>
                         <div style={{display: "flex", flexDirection: "row", height: "100%"}}>
@@ -237,7 +243,7 @@ export const Netzplan : FunctionComponent = (props) => {
                                     key={reloadNumber+""}
                                     nodes={nodes} edges={edges}
                                     onConnect={onConnect}
-                                    onNodesChange={onNodesChange}
+                                    onNodesChange={myOnNodesChange}
                                     onEdgesChange={onEdgesChange}
                                     //                    onElementsRemove={onElementsRemove}
                                     //onNodesChange={onNodesChange}
@@ -248,6 +254,7 @@ export const Netzplan : FunctionComponent = (props) => {
                                     style={{alignContent: "flex-end"}}
                                 >
                                     <Controls />
+                                    <Background />
                                 </ReactFlow>
                             </div>
                             <div style={{display: "flex", flex: 1, flexDirection: "column", backgroundColor: "#DDDDDD"}}>

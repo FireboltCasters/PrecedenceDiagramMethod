@@ -5,11 +5,14 @@ import {GraphHelper} from "./GraphHelper";
 import {InputNumber} from "primereact/inputnumber";
 import {InputText} from "primereact/inputtext";
 import {Netzplan} from "./Netzplan";
+import NetzplanHelper from "./NetzplanHelper";
+import App from "../../App";
 
 const zoom = 1;
 
 const fontStyle = {
     display: "flex",
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     color: "black",
@@ -42,28 +45,6 @@ export class NetzplanNodeEditable extends Component {
         return {
             [NetzplanNodeEditable.getNodeTypeName()]: NetzplanNodeEditable.getMemoRenderer(),
         }
-    }
-
-    static getLegendElement(){
-        const position = { x: 0, y: 0 };
-        return {
-            id: "$testElement$",
-            data: {
-                label: "Name",
-                duration: "Dauer",
-                buffer: "Puffer",
-                earliestStart: "Frühester Start",
-                earliestEnd: "Frühestes Ende",
-                latestStart: "Spätester Start",
-                latestEnd: "Spätestes Ende",
-                note: "Legende"
-            },
-            style: NetzplanNodeEditable.getElementStyle(),
-            targetPosition: Position.Top,
-            sourcePosition: Position.Bottom,
-            type: NetzplanNodeEditable.getNodeTypeName(),
-            position,
-        };
     }
 
     static getElementStyle(){
@@ -101,38 +82,48 @@ export class NetzplanNodeEditable extends Component {
             duration: duration,
         }
 
-        this.labelInputStyle = {textAlign: "center", height: (Netzplan.NODE_HEIGHT/4)+"px", width: (GraphHelper.DEFAULT_NODE_WIDTH)+"px"}
+        this.labelInputStyle = {textAlign: "center", height: (NetzplanHelper.NODE_HEIGHT/4)+"px", width: (GraphHelper.DEFAULT_NODE_WIDTH)+"px"}
         this.outerHolderStyle = {
             backgroundColor: "white",
             width: GraphHelper.DEFAULT_NODE_WIDTH,
-            height: Netzplan.NODE_HEIGHT
+            height: NetzplanHelper.NODE_HEIGHT
+        };
+        this.outerHolderSidebarStyle = {
+            backgroundColor: "white",
+            width: GraphHelper.DEFAULT_NODE_WIDTH*2,
+        };
+        let fontSize = 18;
+        this.outerHolderSidebarFontStyle = {
+            fontSize: fontSize+"px"
         };
     }
 
     renderForSidebar(){
         return(
-            <>
-                <div className="p-grid p-nogutter" style={this.outerHolderStyle}>
-                    <div className="p-col-12 p-nogutter" style={centerStyle} >
-                        {"Label"}
+                <div style={this.outerHolderSidebarStyle}>
+                    <div style={{...centerStyle, ...this.outerHolderSidebarFontStyle}} >
+                        {"Activity"}
                     </div>
-                    <div className="p-col-12 p-nogutter" style={centerStyle} >
-                        {"Dauer"}{" "}{"("+"Puffer"+")"}
+                    <div style={{...centerStyle, ...this.outerHolderSidebarFontStyle}} >
+                        {"Duration"}{" "}{"("+"Buffer"+")"}
                     </div>
-                    <div className="p-col-6 p-nogutter" style={centerStyle} >
-                        {"Früh. Start"}
+                    <div style={{flexDirection: "row", display: "flex"}}>
+                        <div style={{...centerStyle, ...this.outerHolderSidebarFontStyle}} >
+                            {"earliest start"}
+                        </div>
+                        <div style={{...centerStyle, ...this.outerHolderSidebarFontStyle}} >
+                            {"earliest finish"}
+                        </div>
                     </div>
-                    <div className="p-col-6 p-nogutter" style={centerStyle} >
-                        {"Früh. Ende"}
-                    </div>
-                    <div className="p-col-6 p-nogutter" style={centerStyle} >
-                        {"Spät. Start"}
-                    </div>
-                    <div className="p-col-6 p-nogutter" style={centerStyle} >
-                        {"Spät. Ende"}
+                    <div style={{flexDirection: "row", display: "flex"}}>
+                        <div style={{...centerStyle, ...this.outerHolderSidebarFontStyle}} >
+                            {"latest start"}
+                        </div>
+                        <div style={{...centerStyle, ...this.outerHolderSidebarFontStyle}} >
+                            {"latest finish"}
+                        </div>
                     </div>
                 </div>
-            </>
         )
     }
 
@@ -143,9 +134,8 @@ export class NetzplanNodeEditable extends Component {
     }
 
     onBlurDuration(event){
-        let netzplanInstance = this.props.data.instance;
         let id = this.props.data.id;
-        netzplanInstance.setNodeDuration(id, this.state.duration);
+        App.netzplanRef.setNodeDuration(id, this.state.duration);
     }
 
     renderDurationInput(){
@@ -160,23 +150,34 @@ export class NetzplanNodeEditable extends Component {
     }
 
     onBlurLabel(event){
-        let netzplanInstance = this.props.data.instance;
         let id = this.props.data.id;
-        netzplanInstance.setNodeLabel(id, this.state.label);
+        App.netzplanRef.setNodeLabel(id, this.state.label);
     }
 
     renderLabelInput(){
         return <InputText onBlur={this.onBlurLabel.bind(this)}  style={this.labelInputStyle} value={this.state.label} onChange={this.onChangeLabel.bind(this)}/>;
     }
 
-    render() {
-        let topContent = <Handle type="target" position={Position.Top}/>;
-        let bottomContent = <Handle type="source" position={Position.Bottom} />;
+    renderPuffer(data){
+        let buffer = data.buffer;
+        if(buffer===undefined){
+            return "Duration"
+        }
 
+        return(
+            "("+data.buffer+")"
+        )
+    }
+
+    render() {
         let data = this.props.data;
         if(!data){ //Sidebar
             return this.renderForSidebar()
         }
+
+        let topContent = <Handle type="target" position={Position.Top}/>;
+        let bottomContent = <Handle type="source" position={Position.Bottom} />;
+
 
         return (
             <>
@@ -186,19 +187,23 @@ export class NetzplanNodeEditable extends Component {
                         {this.renderLabelInput()}
                     </div>
                     <div className="p-col-12 p-nogutter" style={centerStyle} >
-                        {this.renderDurationInput()}{" "}{"("+data.buffer+")"}
+                        {this.renderDurationInput()}{" "}{this.renderPuffer(data)}
                     </div>
-                    <div className="p-col-6 p-nogutter" style={centerStyle} >
-                        {""+data.earliestStart}
+                    <div style={{flexDirection: "row", display: "flex"}}>
+                        <div className="p-col-6 p-nogutter" style={centerStyle} >
+                            {""+data.earliestStart}
+                        </div>
+                        <div className="p-col-6 p-nogutter" style={centerStyle} >
+                            {""+data.earliestEnd}
+                        </div>
                     </div>
-                    <div className="p-col-6 p-nogutter" style={centerStyle} >
-                        {""+data.earliestEnd}
-                    </div>
-                    <div className="p-col-6 p-nogutter" style={centerStyle} >
-                        {""+data.latestStart}
-                    </div>
-                    <div className="p-col-6 p-nogutter" style={centerStyle} >
-                        {""+data.latestEnd}
+                    <div style={{flexDirection: "row", display: "flex"}}>
+                        <div className="p-col-6 p-nogutter" style={centerStyle} >
+                            {""+data.latestStart}
+                        </div>
+                        <div className="p-col-6 p-nogutter" style={centerStyle} >
+                            {""+data.latestEnd}
+                        </div>
                     </div>
                 </div>
                 {bottomContent}
