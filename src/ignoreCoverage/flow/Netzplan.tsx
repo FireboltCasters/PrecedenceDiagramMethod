@@ -7,41 +7,15 @@ import ReactFlow, {
 } from 'react-flow-renderer';
 import {GraphHelper} from "./GraphHelper";
 import {NetzplanNodeEditable} from "./NetzplanNodeEditable";
-import {Sidebar} from "./Sidebar";
+import {SidebarNodes} from "./SidebarNodes";
 import {MyToolbar} from "./MyToolbar";
+import NetzplanHelper from "./NetzplanHelper";
 
 const initNodeName = "init";
 
 const strokeWidth = 2;
 const edgeNormal = "#444444";
 const edgeCritical = "#ff2222";
-
-
-const initialNodes = [
-    {
-        id: '1',
-        type: 'input',
-        data: { label: 'Input Node' },
-        position: { x: 250, y: 25 }
-    },
-    {
-        id: '2',
-        data: { label: 'Default Node' },
-        position: { x: 100, y: 125 }
-    },
-    {
-        id: '3',
-        type: 'output',
-        data: { label: 'Output Node' },
-        position: { x: 250, y: 250 }
-    }
-];
-
-const initialEdges = [
-    { id: 'e1-2', source: '1', target: '2' },
-    { id: 'e2-3', source: '2', target: '3', animated: true },
-];
-
 
 let id = 1;
 const getId = () => `Knoten_${id++}`;
@@ -54,8 +28,8 @@ export const Netzplan : FunctionComponent = (props) => {
     const [nodeTypes, setNodetypes] = useState({});
     const [reloadNumber, setReloadNumber] = useState(0)
     const [reactFlowInstance, setReactFlowInstance] = useState(undefined)
-    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    const [nodes, setNodes, onNodesChange] = useNodesState(NetzplanHelper.initialNodes);
+    const [edges, setEdges, onEdgesChange] = useEdgesState(NetzplanHelper.initialEdges);
     const onConnect = (params: any) => setEdges((eds) => addEdge({animated: true ,...params}, eds));
 
     useEffect(() => {
@@ -277,7 +251,7 @@ export const Netzplan : FunctionComponent = (props) => {
                                 </ReactFlow>
                             </div>
                             <div style={{display: "flex", flex: 1, flexDirection: "column", backgroundColor: "#DDDDDD"}}>
-                                <Sidebar nodeTypes={nodeTypes} />
+                                <SidebarNodes nodeTypes={nodeTypes} />
                             </div>
                         </div>
                 </div>
