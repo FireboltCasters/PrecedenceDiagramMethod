@@ -3,10 +3,12 @@ import ReactFlow, {
     addEdge,
 //    removeElements,
     Controls, isNode,
-    getOutgoers, isEdge, useEdgesState, useNodesState
+    getOutgoers, isEdge, useEdgesState, useNodesState, ReactFlowProvider
 } from 'react-flow-renderer';
 import {GraphHelper} from "./GraphHelper";
 import {NetzplanNodeEditable} from "./NetzplanNodeEditable";
+import {Sidebar} from "./Sidebar";
+import {MyToolbar} from "./MyToolbar";
 
 const initNodeName = "init";
 
@@ -54,7 +56,7 @@ export const Netzplan : FunctionComponent = (props) => {
     const [reactFlowInstance, setReactFlowInstance] = useState(undefined)
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-    const onConnect = (params: any) => setEdges((eds) => addEdge(params, eds));
+    const onConnect = (params: any) => setEdges((eds) => addEdge({animated: true ,...params}, eds));
 
     useEffect(() => {
         const nodeTypes = Object.assign({}, NetzplanNodeEditable.getNodeType())
@@ -248,22 +250,37 @@ export const Netzplan : FunctionComponent = (props) => {
         let height = 700;
 
         return (
-           <ReactFlow
-               fitView
-                    ref={reactFlowWrapper}
-                    key={reloadNumber+""}
-                    nodes={nodes} edges={edges}
-                    onConnect={onConnect}
-                   onNodesChange={onNodesChange}
-                   onEdgesChange={onEdgesChange}
-//                    onElementsRemove={onElementsRemove}
-                    //onNodesChange={onNodesChange}
-                    onInit={onInit}
-                    onDrop={onDrop}
-                    onDragOver={onDragOver}
-                    nodeTypes={nodeTypes}
-                >
-                    <Controls />
-                </ReactFlow>
+            <ReactFlowProvider key={reloadNumber+1+""}>
+                <div style={{width: "100%", height: "10vh"}}>
+                    <MyToolbar />
+                </div>
+                <div style={{width: "100%", height: "90vh"}}>
+                        <div style={{display: "flex", flexDirection: "row", height: "100%"}}>
+                            <div style={{display: "flex", flex: 3}}>
+                                <ReactFlow
+                                    fitView
+                                    ref={reactFlowWrapper}
+                                    key={reloadNumber+""}
+                                    nodes={nodes} edges={edges}
+                                    onConnect={onConnect}
+                                    onNodesChange={onNodesChange}
+                                    onEdgesChange={onEdgesChange}
+                                    //                    onElementsRemove={onElementsRemove}
+                                    //onNodesChange={onNodesChange}
+                                    onInit={onInit}
+                                    onDrop={onDrop}
+                                    onDragOver={onDragOver}
+                                    nodeTypes={nodeTypes}
+                                    style={{alignContent: "flex-end"}}
+                                >
+                                    <Controls />
+                                </ReactFlow>
+                            </div>
+                            <div style={{display: "flex", flex: 1, flexDirection: "column", backgroundColor: "#DDDDDD"}}>
+                                <Sidebar nodeTypes={nodeTypes} />
+                            </div>
+                        </div>
+                </div>
+            </ReactFlowProvider>
         );
 }
