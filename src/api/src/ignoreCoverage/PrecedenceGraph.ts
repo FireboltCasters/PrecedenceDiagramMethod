@@ -1,3 +1,4 @@
+import DetectLoopInGraph from "./DetectLoopInGraph";
 
 export default class PrecedenceGraph {
     public graph: any;
@@ -6,14 +7,16 @@ export default class PrecedenceGraph {
     constructor(graph: any, startNodeLabel: any) {
         let graphCopy = JSON.parse(JSON.stringify(graph))
         this.startNodeLabel = startNodeLabel;
-        let resettedGraph = PrecedenceGraph.resetCalcedTimesGraph(graphCopy);
-        let forwardGraph = PrecedenceGraph.calcForwardGraph(resettedGraph, startNodeLabel);
-        console.log("Graph after calcForwardGraph");
-        console.log(forwardGraph)
-        let backwardGraph = PrecedenceGraph.calcBackwardGraph(forwardGraph);
-        console.log("Graph after calcBackwardGraph");
-        console.log(backwardGraph)
-        this.graph = backwardGraph;
+
+        let hasLoop = PrecedenceGraph.hasLoop(graphCopy);
+        if(!hasLoop){
+            let resettedGraph = PrecedenceGraph.resetCalcedTimesGraph(graphCopy);
+            let forwardGraph = PrecedenceGraph.calcForwardGraph(resettedGraph, startNodeLabel);
+            let backwardGraph = PrecedenceGraph.calcBackwardGraph(forwardGraph);
+            this.graph = backwardGraph;
+        } else {
+            throw new Error("Graph has a directed loop");
+        }
     }
 
     getGraph(): any{
@@ -22,6 +25,11 @@ export default class PrecedenceGraph {
 
     getStartNode(): any{
         return this.startNodeLabel;
+    }
+
+    static hasLoop(graphJSON: any){
+        let loopDetector = new DetectLoopInGraph(graphJSON);
+        return loopDetector.isCyclic();
     }
 
     static resetCalcedTimesGraph(graphJSON: any){
@@ -89,8 +97,39 @@ export default class PrecedenceGraph {
         return JSON.parse(JSON.stringify(graphJSON));
     }
 
+    static getFromAllEarliestEndsTheLatest(graph: any){
+        let graphJSON = JSON.parse(JSON.stringify(graph))
+        let listOfLeafes = PrecedenceGraph.getAllLeafes(graphJSON);
+
+        let highestEarliestEnd = 0;
+        for(let leafLabel of listOfLeafes){
+            let node = graphJSON[leafLabel];
+            let earliestEnd = node.earliestEnd;
+            if(earliestEnd > highestEarliestEnd){
+                highestEarliestEnd = earliestEnd;
+            }
+        }
+        return highestEarliestEnd;
+    }
+
+    static setLatestStartToAllLeafes(graph: any){
+        let graphJSON = JSON.parse(JSON.stringify(graph))
+
+        let highestEarliestEnd = PrecedenceGraph.getFromAllEarliestEndsTheLatest(graphJSON);
+
+        let listOfLeafes = PrecedenceGraph.getAllLeafes(graphJSON);
+
+        for(let leafLabel of listOfLeafes){
+            let node = graphJSON[leafLabel];
+            node.latestEnd = highestEarliestEnd;
+            graphJSON[leafLabel] = node;
+        }
+
+        return graphJSON;
+    }
+
     static calcBackwardGraph(graph: any){
-        let graphJSON = JSON.parse(JSON.stringify(graph));
+        let graphJSON = PrecedenceGraph.setLatestStartToAllLeafes(graph);
 
         let listOfLeafes = PrecedenceGraph.getAllLeafes(graphJSON);
 
@@ -103,9 +142,12 @@ export default class PrecedenceGraph {
 
     static calcBackwardGraphForEndlabel(graphJSON: any, endNodeLabel: any){
         let endNode = graphJSON[endNodeLabel];
-        endNode.latestEnd = endNode.earliestEnd;
-        endNode.latestStart = endNode.earliestStart;
-        endNode.buffer = 0;
+
+        if(endNode.latestStart==null){
+            endNode.latestStart = endNode.latestEnd-endNode.duration;
+            endNode.buffer = endNode.latestEnd - endNode.earliestEnd;
+        }
+
         graphJSON[endNodeLabel] = JSON.parse(JSON.stringify(endNode));
 
         let listOfImpoveableNodes = [endNodeLabel];
@@ -123,11 +165,6 @@ export default class PrecedenceGraph {
                         let parentLabel = parents[j];
                         let parent = JSON.parse(JSON.stringify(graphJSON[parentLabel]));
 
-                        if(parentLabel==="Start"){
-                            console.log("before")
-                            console.log(JSON.parse(JSON.stringify(parent)))
-                        }
-
                         let parentsLatestEnd = parent.latestEnd;
                         if(parentsLatestEnd==null || parentsLatestEnd > child.latestStart){
                             parent.latestEnd = child.latestStart;
@@ -137,10 +174,6 @@ export default class PrecedenceGraph {
                         parent.latestStart = parent.latestEnd - parent.duration;
                         parent.buffer = parent.latestEnd - parent.earliestEnd;
 
-                        if(parentLabel==="Start"){
-                            console.log("after")
-                            console.log(JSON.parse(JSON.stringify(parent)))
-                        }
                         graphJSON[parentLabel] = JSON.parse(JSON.stringify(parent));
                     }
                 }

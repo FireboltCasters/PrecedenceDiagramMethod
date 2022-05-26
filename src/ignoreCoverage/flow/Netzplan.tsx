@@ -6,6 +6,7 @@ import ReactFlow, {
     Background,
     getOutgoers, isEdge, useEdgesState, useNodesState, ReactFlowProvider, ReactFlowInstance
 } from 'react-flow-renderer';
+import { Toast } from 'primereact/toast';
 import {GraphHelper} from "./GraphHelper";
 import {NetzplanNodeEditable} from "./NetzplanNodeEditable";
 import {SidebarNodes} from "./SidebarNodes";
@@ -19,11 +20,16 @@ const edgeNormal = "#444444";
 const edgeCritical = "#ff2222";
 
 let id = 1;
-const getId = () => `Activity_${id++}`;
+const getId = () => {
+    let date = new Date();
+
+    return `Activity_${date.getTime()}`
+};
 
 
 export const Netzplan : FunctionComponent = (props) => {
 
+    const toast = useRef(null);
     const reactFlowWrapper = React.createRef<HTMLDivElement>();
     const [nodeTypes, setNodetypes] = useState({});
     const [reloadNumber, setReloadNumber] = useState(0)
@@ -34,9 +40,15 @@ export const Netzplan : FunctionComponent = (props) => {
     const [edges, setEdges, onEdgesChange] = useEdgesState(NetzplanHelper.initialEdges);
     const onConnect = (params: any) => setEdges((eds) => addEdge({animated: true ,...params}, eds));
 
-    function autoLayoutElements(){
-        let layoutedElements: any = GraphHelper.getLayoutedElements(nodes, GraphHelper.DEFAULT_NODE_WIDTH, NetzplanHelper.NODE_HEIGHT);
-        updateReactFlowElements(layoutedElements);
+    async function autoLayoutElements(){
+        let layoutedElements: any = GraphHelper.getLayoutedElements(nodes, edges, GraphHelper.DEFAULT_NODE_WIDTH, NetzplanHelper.NODE_HEIGHT);
+        await updateReactFlowElements(layoutedElements);
+        await sleep(250);
+        fitView();
+    }
+
+    async function sleep(milliseconds: number) {
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
 
     async function reset(){
@@ -44,6 +56,10 @@ export const Netzplan : FunctionComponent = (props) => {
         await setNodes(NetzplanHelper.initialNodes)
         //@ts-ignore
         await setEdges(NetzplanHelper.initialEdges)
+        fitView();
+    }
+
+    function fitView(){
         if(reactFlowInstance!=null){
             reactFlowInstance?.fitView()
         }
@@ -78,9 +94,16 @@ export const Netzplan : FunctionComponent = (props) => {
         console.log("startNodeLabel: ", startNodeLabel);
         let graphJSON = getNetzplanJSONFromReactFlowElements();
         console.log(graphJSON);
-        let precedenceGraph = new PrecedenceGraph(graphJSON, startNodeLabel);
-        console.log(precedenceGraph);
-        updateElementsByCalcedNetzplan(precedenceGraph.getGraph());
+        try{
+            let precedenceGraph = new PrecedenceGraph(graphJSON, startNodeLabel);
+            console.log(precedenceGraph);
+            updateElementsByCalcedNetzplan(precedenceGraph.getGraph());
+        } catch (err){
+            if(toast.current!=null){
+                //@ts-ignore
+                toast.current.show({severity:'error', summary: 'Error', detail:err.message, life: 3000});
+            }
+        }
     }
 
     function updateReactFlowElements(nodes: any){
@@ -114,7 +137,7 @@ export const Netzplan : FunctionComponent = (props) => {
             let targetNode = calcedNetzplan[target];
 
             if(!!sourceNode && !!targetNode){
-                let isCritical = sourceNode?.buffer === 0 && targetNode?.buffer === 0;
+                let isCritical = PrecedenceGraph.isCriticalPath(sourceNode, targetNode);
                 edge.style = {};
                 if(isCritical){
                     edge.style.stroke= edgeCritical;
@@ -231,6 +254,7 @@ export const Netzplan : FunctionComponent = (props) => {
 
         return (
             <ReactFlowProvider key={reloadNumber+1+""}>
+                <Toast ref={toast}></Toast>
                 <div style={{width: "100%", height: "10vh"}}>
                     <MyToolbar handleCalc={calcNetzplan} handleLayout={autoLayoutElements} handleClear={reset} nodes={nodes} edges={edges} setNodes={setNodes} setEdges={setEdges} />
                 </div>
