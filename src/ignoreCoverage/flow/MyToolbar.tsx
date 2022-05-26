@@ -4,6 +4,7 @@ import {Toolbar} from "primereact/toolbar";
 import { FileUpload } from 'primereact/fileupload';
 import {Button} from "primereact/button";
 import DownloadHelper from "../helper/DownloadHelper";
+import NetzplanHelper from "./NetzplanHelper";
 
 export interface AppState{
     nodes?: any,
@@ -19,7 +20,7 @@ export const MyToolbar: FunctionComponent<AppState> = ({nodes, edges, setEdges, 
     function handleExport(){
         let elements = {
             nodes: nodes,
-            edges: edges
+            edges: NetzplanHelper.removeEdgeStyle(JSON.parse(JSON.stringify(edges)))
         };
         DownloadHelper.downloadTextAsFiletile(JSON.stringify(elements), "graph.json")
     }
@@ -33,7 +34,7 @@ export const MyToolbar: FunctionComponent<AppState> = ({nodes, edges, setEdges, 
             console.log(content);
             let elements = JSON.parse(content);
             setNodes(elements?.nodes)
-            setEdges(elements?.edges);
+            setEdges(NetzplanHelper.applyDefaultEdgeStyle(elements?.edges));
         });
         reader.readAsText(file);
     }

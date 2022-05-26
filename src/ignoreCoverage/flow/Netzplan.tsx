@@ -15,7 +15,7 @@ import NetzplanHelper from "./NetzplanHelper";
 import App from "../../App";
 import {PrecedenceGraph} from "../../api/src";
 
-const strokeWidth = 2;
+const strokeWidth = 5;
 const edgeNormal = "#444444";
 const edgeCritical = "#ff2222";
 
@@ -35,14 +35,14 @@ export const Netzplan : FunctionComponent = (props) => {
     const [reloadNumber, setReloadNumber] = useState(0)
     const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance>()
     //@ts-ignore
-    const [nodes, setNodes, onNodesChange] = useNodesState(NetzplanHelper.initialNodes);
+    const [nodes, setNodes, onNodesChange] = useNodesState(NetzplanHelper.getInitialNodes());
     //@ts-ignore
-    const [edges, setEdges, onEdgesChange] = useEdgesState(NetzplanHelper.initialEdges);
-    const onConnect = (params: any) => setEdges((eds) => addEdge({animated: true ,...params}, eds));
+    const [edges, setEdges, onEdgesChange] = useEdgesState(NetzplanHelper.getInitialEdges());
+    const onConnect = (params: any) => setEdges((eds) => addEdge({style: NetzplanHelper.defaultEdgeStyle, animated: true ,...params}, eds));
 
-    async function autoLayoutElements(){
-        let layoutedElements: any = GraphHelper.getLayoutedElements(nodes, edges, GraphHelper.DEFAULT_NODE_WIDTH, NetzplanHelper.NODE_HEIGHT);
-        await updateReactFlowElements(layoutedElements);
+    async function autoLayoutElements(passedNodes?: any, passedEdges?: any){
+        let layoutedElements: any = GraphHelper.getLayoutedElements(passedNodes || nodes, passedEdges || edges, GraphHelper.DEFAULT_NODE_WIDTH, NetzplanHelper.NODE_HEIGHT);
+        setNodes(layoutedElements)
         await sleep(250);
         fitView();
     }
@@ -53,10 +53,12 @@ export const Netzplan : FunctionComponent = (props) => {
 
     async function reset(){
         //@ts-ignore
-        await setNodes(NetzplanHelper.initialNodes)
+        await setNodes(NetzplanHelper.getInitialNodes())
         //@ts-ignore
-        await setEdges(NetzplanHelper.initialEdges)
-        fitView();
+        await setEdges(NetzplanHelper.getInitialEdges())
+        await sleep(100);
+        calcNetzplan();
+        setReloadNumber(reloadNumber+1);
     }
 
     function fitView(){
@@ -106,12 +108,7 @@ export const Netzplan : FunctionComponent = (props) => {
         }
     }
 
-    function updateReactFlowElements(nodes: any){
-        setNodes(nodes)
-        //setReloadNumber(reloadNumber+1);
-    }
-
-    function updateElementsByCalcedNetzplan(calcedNetzplan: any){
+    async function updateElementsByCalcedNetzplan(calcedNetzplan: any){
         let newNodes = [];
         for(let node of nodes){
             let id = node.id;
@@ -138,13 +135,12 @@ export const Netzplan : FunctionComponent = (props) => {
 
             if(!!sourceNode && !!targetNode){
                 let isCritical = PrecedenceGraph.isCriticalPath(sourceNode, targetNode);
-                edge.style = {};
+                edge.style = {...NetzplanHelper.defaultEdgeStyle};
                 if(isCritical){
                     edge.style.stroke= edgeCritical;
                 } else {
                     edge.style.stroke= edgeNormal;
                 }
-                edge.style.strokeWidth = strokeWidth;
             }
             newEdges.push(edge);
         }
@@ -225,11 +221,24 @@ export const Netzplan : FunctionComponent = (props) => {
                 //@ts-ignore
                 data[key] = value;
                 element.data = data;
-                elementsCopy[i] = element
             }
+
+            element.data.buffer = undefined;
+            //@ts-ignore
+            element.data.earliestStart = undefined;
+            //@ts-ignore
+            element.data.earliestEnd = undefined;
+            //@ts-ignore
+            element.data.latestStart = undefined;
+            //@ts-ignore
+            element.data.latestEnd = undefined
+            elementsCopy[i] = element;
             newElements.push(element);
         }
-        updateReactFlowElements(newElements);
+
+        setEdges(NetzplanHelper.applyDefaultEdgeStyle(JSON.parse(JSON.stringify(edges))))
+        setNodes(newElements);
+        setReloadNumber(reloadNumber+1)
     }
 
     function myOnNodesChange(nodesChanges: any){
@@ -248,6 +257,8 @@ export const Netzplan : FunctionComponent = (props) => {
         const nodeTypes = Object.assign({}, NetzplanNodeEditable.getNodeType())
         //@ts-ignore
         setNodetypes(nodeTypes);
+        calcNetzplan()
+        autoLayoutElements()
     }, [])
 
         let height = 700;

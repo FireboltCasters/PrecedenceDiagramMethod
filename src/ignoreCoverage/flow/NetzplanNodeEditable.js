@@ -165,7 +165,7 @@ export class NetzplanNodeEditable extends Component {
         }
 
         return(
-            "("+data.buffer+")"
+            "(buffer: "+data.buffer+")"
         )
     }
 
@@ -191,18 +191,18 @@ export class NetzplanNodeEditable extends Component {
                     </div>
                     <div style={{flexDirection: "row", display: "flex"}}>
                         <div className="p-col-6 p-nogutter" style={centerStyle} >
-                            {""+data.earliestStart}
+                            {""+data.earliestStart+" (e. s.)"}
                         </div>
                         <div className="p-col-6 p-nogutter" style={centerStyle} >
-                            {""+data.earliestEnd}
+                            {""+data.earliestEnd+" (e. e.)"}
                         </div>
                     </div>
                     <div style={{flexDirection: "row", display: "flex"}}>
                         <div className="p-col-6 p-nogutter" style={centerStyle} >
-                            {""+data.latestStart}
+                            {""+data.latestStart+" (l. s.)"}
                         </div>
                         <div className="p-col-6 p-nogutter" style={centerStyle} >
-                            {""+data.latestEnd}
+                            {""+data.latestEnd+" (l. e.)"}
                         </div>
                     </div>
                 </div>
