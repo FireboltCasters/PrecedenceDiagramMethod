@@ -266,10 +266,7 @@ export const Netzplan : FunctionComponent = (props) => {
         return (
             <ReactFlowProvider key={reloadNumber+1+""}>
                 <Toast ref={toast}></Toast>
-                <div style={{width: "100%", height: "10vh"}}>
-                    <MyToolbar handleCalc={calcNetzplan} handleLayout={autoLayoutElements} handleClear={reset} nodes={nodes} edges={edges} setNodes={setNodes} setEdges={setEdges} />
-                </div>
-                <div style={{width: "100%", height: "90vh"}}>
+                <div style={{width: "100%", height: "100vh"}}>
                         <div style={{display: "flex", flexDirection: "row", height: "100%"}}>
                             <div style={{display: "flex", flex: 3}}>
                                 <ReactFlow
@@ -293,6 +290,7 @@ export const Netzplan : FunctionComponent = (props) => {
                                 </ReactFlow>
                             </div>
                             <div style={{display: "flex", flex: 1, flexDirection: "column", backgroundColor: "#DDDDDD"}}>
+                                <MyToolbar handleCalc={calcNetzplan} handleLayout={autoLayoutElements} handleClear={reset} nodes={nodes} edges={edges} setNodes={setNodes} setEdges={setEdges} />
                                 <SidebarNodes nodeTypes={nodeTypes} />
                             </div>
                         </div>
