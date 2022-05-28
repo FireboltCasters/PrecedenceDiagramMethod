@@ -37,12 +37,159 @@ A library to calculate the critical path in an given precedence-diagram.
 
 https://fireboltcasters.github.io/PrecedenceDiagramMethod/
 
+## Installtion
+
+```
+npm install precedence-diagram-method
+```
+
 ## Usage
 
-TODO
+```ts
+import {PrecedenceGraph} from "precedence-diagram-method";
+
+
+let exampleGraph = {
+    "StartLabel": {
+        "children": [
+            "Marketing",
+            "Documentation"
+        ],
+        "duration": 0
+    },
+    "Marketing": {
+        "children": [
+            "Publishing"
+        ],
+        "duration": 3
+    },
+    "Documentation": {
+        "children": [
+            "Publishing"
+        ],
+        "duration": 4
+    },
+    "Publishing": {
+        "children": [],
+        "duration": 2
+    }
+}
+
+let instance = new PrecedenceGraph(exampleGraph, "StartLabel");
+let calcedGraph = instance.getGraph();
+let criticalPath = instance.getCriticalPaths();
+```
+
+Each node will have to be in the following format:
+
+```
+<NameOfTheActiticy>: {
+    "children": [<Array of children names>],
+    "duraion": <DurationOfTheActivity>
+}
+```
+
+
+Each node will have the following fields
+
+## Node fields
+
+- duration: number
+- buffer: number
+- earliestStart: number
+- earliestEnd: number
+- latestStart: number
+- latestEnd: number
+- children: [Node]
+- parents: [Node]
+
+## Documentation
+
+You can also use additional methods:
+
+### instance ()
+
+---
+
+Get the current precedence graph
+```ts
+instance.getGraph()
+```
+---
+
+Get the start node label of the precedence graph
+```ts
+instance.getStartNode()
+```
+---
+
+Returns is a connection between a child and a parent is critical (no buffer)
+```ts
+instance.isCriticalPath(parentId, childId)
+```
+---
+
+Get the start node label of the precedence graph
+```ts
+instance.getStartNode()
+```
+---
+
+Gets all ciritcal paths
+```ts
+instance. isCriticalPath()
+```
+---
+
+
+### static
+
+Returns true if the loop has a directed loop
+```ts
+PrecedenceGraph.hasLoop(graph)
+```
+---
+
+Resets all calced times on a graph and returns a copy
+```ts
+PrecedenceGraph.resetCalcedTimesGraph(graph)
+```
+---
+
+Calculates the forward precedence graph from a given startLabel and returns a copy
+```ts
+PrecedenceGraph.calcForwardGraph(graph, startLabel)
+```
+---
+
+Returns the highest earliest end on a given graph
+```ts
+PrecedenceGraph.getFromAllEarliestEndsTheLatest(graph)
+```
+---
+
+Sets the highest earliest end to the latest end of all leaf nodes
+```ts
+PrecedenceGraph.setLatestStartToAllLeafes(graph)
+```
+---
+
+Calculates the backward precedence graph
+```ts
+PrecedenceGraph.calcBackwardGraph(graph)
+```
+---
+
+Returns all leaves of a given graph
+```ts
+PrecedenceGraph.getAllLeafes(graph)
+```
+---
+
+There a more functions which I wont describe here further. More information has to be read from the source code.
 
 ## Contributors
 
 The FireboltCasters
 
-<a href="https://github.com/FireboltCasters/precedence-diagram-method"><img src="https://contrib.rocks/image?repo=FireboltCasters/precedence-diagram-method" alt="Contributors" /></a>
+<a href="https://github.com/FireboltCasters/PrecedenceDiagramMethod"><img src="https://contrib.rocks/image?repo=FireboltCasters/PrecedenceDiagramMethod" alt="Contributors" /></a>

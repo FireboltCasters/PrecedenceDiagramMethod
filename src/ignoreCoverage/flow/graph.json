@@ -9,4 +9,6 @@
     {"source":"Start","target":"Activity_1","id":"reactflow__edge-Start-Activity_1"},
     {"source":"Start","target":"Activity_2","id":"reactflow__edge-Start-Activity_2"},
     {"source":"Activity_2","target":"Activity_3","id":"reactflow__edge-Activity_2-Activity_3"},
-    {"source":"Activity_1","target":"Activity_3","targetHandle":null,"id":"reactflow__edge-Activity_1-Activity_3"}]}
+    {"source":"Activity_1","target":"Activity_3","targetHandle":null,"id":"reactflow__edge-Activity_1-Activity_3"}
+  ]
+}
