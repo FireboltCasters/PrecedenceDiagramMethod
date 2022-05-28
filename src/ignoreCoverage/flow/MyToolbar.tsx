@@ -14,8 +14,10 @@ export interface AppState{
     handleCalc?: any,
     handleLayout: any,
     handleClear?: any
+    setReloadNumber?: any,
+    reloadNumber?: any
 }
-export const MyToolbar: FunctionComponent<AppState> = ({nodes, edges, setEdges, setNodes, handleCalc,handleLayout, handleClear, ...props}) => {
+export const MyToolbar: FunctionComponent<AppState> = ({nodes, edges, setEdges, setNodes, setReloadNumber, reloadNumber, handleCalc,handleLayout, handleClear, ...props}) => {
 
     function handleExport(){
         let elements = {
@@ -29,14 +31,22 @@ export const MyToolbar: FunctionComponent<AppState> = ({nodes, edges, setEdges, 
         let files = event.files;
         let file = files[0];
         const reader = new FileReader();
-        reader.addEventListener('load', (event) => {
+        reader.addEventListener('load', async (event) => {
             let content: string = ""+event?.target?.result;
             console.log(content);
             let elements = JSON.parse(content);
+            setNodes([])
+            setEdges([])
+            await sleep(100);
             setNodes(elements?.nodes)
             setEdges(NetzplanHelper.applyDefaultEdgeStyle(elements?.edges));
+            setReloadNumber(reloadNumber+1);
         });
         reader.readAsText(file);
+    }
+
+    async function sleep(milliseconds: number) {
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
 
     const uploadOptions = {label: 'Upload', icon: 'pi pi-upload', className: 'p-button-success'};

@@ -42,8 +42,10 @@ export const Netzplan : FunctionComponent = (props) => {
 
     async function autoLayoutElements(passedNodes?: any, passedEdges?: any){
         let layoutedElements: any = GraphHelper.getLayoutedElements(passedNodes || nodes, passedEdges || edges, GraphHelper.DEFAULT_NODE_WIDTH, NetzplanHelper.NODE_HEIGHT);
+        setNodes([])
+        await sleep(100);
         setNodes(layoutedElements)
-        await sleep(250);
+        await sleep(100);
         fitView();
         setReloadNumber(reloadNumber+1);
     }
@@ -90,9 +92,7 @@ export const Netzplan : FunctionComponent = (props) => {
     }
 
     function calcNetzplan(){
-        console.log("calcNetzplan")
         let startNodeLabel: string = NetzplanHelper.initNodeName;
-        console.log("startNodeLabel: ", startNodeLabel);
         let graphJSON = getNetzplanJSONFromReactFlowElements();
         console.log(graphJSON);
         try{
@@ -148,6 +148,9 @@ export const Netzplan : FunctionComponent = (props) => {
         console.log(newNodes)
         console.log(newEdges);
 
+        setNodes([])
+        setEdges([])
+        await sleep(100);
         setNodes(newNodes);
         setEdges(newEdges);
         setReloadNumber(reloadNumber+1)
@@ -289,7 +292,7 @@ export const Netzplan : FunctionComponent = (props) => {
                                 </ReactFlow>
                             </div>
                             <div style={{display: "flex", flex: 1, flexDirection: "column", backgroundColor: "#DDDDDD"}}>
-                                <MyToolbar handleCalc={calcNetzplan} handleLayout={autoLayoutElements} handleClear={reset} nodes={nodes} edges={edges} setNodes={setNodes} setEdges={setEdges} />
+                                <MyToolbar handleCalc={calcNetzplan} handleLayout={autoLayoutElements} handleClear={reset} nodes={nodes} edges={edges} setNodes={setNodes} setEdges={setEdges} setReloadNumber={setReloadNumber} reloadNumber={reloadNumber} />
                                 <SidebarNodes nodeTypes={nodeTypes} />
                             </div>
                         </div>
