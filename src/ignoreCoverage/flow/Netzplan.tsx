@@ -43,9 +43,10 @@ export const Netzplan : FunctionComponent = (props) => {
     async function autoLayoutElements(passedNodes?: any, passedEdges?: any){
         let layoutedElements: any = GraphHelper.getLayoutedElements(passedNodes || nodes, passedEdges || edges, GraphHelper.DEFAULT_NODE_WIDTH, NetzplanHelper.NODE_HEIGHT);
         setNodes([])
-        await sleep(100);
+        setReloadNumber(reloadNumber+1);
+        await sleep(500);
         setNodes(layoutedElements)
-        await sleep(100);
+        await sleep(500);
         fitView();
         setReloadNumber(reloadNumber+1);
     }
@@ -256,6 +257,7 @@ export const Netzplan : FunctionComponent = (props) => {
     }
 
     useEffect(() => {
+        document.title = "Precedence Diagram Demo"
         const nodeTypes = Object.assign({}, NetzplanNodeEditable.getNodeType())
         //@ts-ignore
         setNodetypes(nodeTypes);
