@@ -19,6 +19,7 @@ export default class NetzplanHelper{
             delete edge.animated;
             delete edge.targetHandle;
             delete edge.sourceHandle;
+            delete edge.type;
         }
         return edges;
     }
@@ -27,6 +28,7 @@ export default class NetzplanHelper{
         for(let edge of edges){
             edge.style = NetzplanHelper.defaultEdgeStyle
             edge.animated = true;
+            edge.type = 'buttonedge';
         }
         return edges;
     }

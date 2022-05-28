@@ -5,8 +5,11 @@ import { FileUpload } from 'primereact/fileupload';
 import {Button} from "primereact/button";
 import DownloadHelper from "../helper/DownloadHelper";
 import NetzplanHelper from "./NetzplanHelper";
+import {SplitButton} from "primereact/splitbutton";
 
 export interface AppState{
+    autocalc?: any,
+    setAutoCalc?: any,
     nodes?: any,
     setNodes?: any,
     edges?: any,
@@ -17,7 +20,7 @@ export interface AppState{
     setReloadNumber?: any,
     reloadNumber?: any
 }
-export const MyToolbar: FunctionComponent<AppState> = ({nodes, edges, setEdges, setNodes, setReloadNumber, reloadNumber, handleCalc,handleLayout, handleClear, ...props}) => {
+export const MyToolbar: FunctionComponent<AppState> = ({autocalc, setAutoCalc, nodes, edges, setEdges, setNodes, setReloadNumber, reloadNumber, handleCalc,handleLayout, handleClear, ...props}) => {
 
     function handleExport(){
         let elements = {
@@ -52,17 +55,40 @@ export const MyToolbar: FunctionComponent<AppState> = ({nodes, edges, setEdges, 
     const uploadOptions = {label: 'Upload', icon: 'pi pi-upload', className: 'p-button-success'};
     const leftContents = (
         <React.Fragment>
-          <Button label="New" icon="pi pi-plus" className="mr-2" style={{margin: 5}} onClick={handleClear} />
-          <FileUpload auto chooseOptions={uploadOptions} accept="application/JSON" mode="basic" name="demo[]" url="./upload" className="p-button-success" customUpload uploadHandler={handleImport} style={{margin: 5}} />
-          <Button label="Download" icon="pi pi-download" className="p-button-warning" style={{margin: 5}} onClick={handleExport} />
+          <Button label="New" icon="pi pi-plus" className="mr-2" style={{margin: 5}} onClick={() => {handleClear()}} />
+          <FileUpload auto chooseOptions={uploadOptions} accept="application/JSON" mode="basic" name="demo[]" url="./upload" className="p-button-success" customUpload uploadHandler={(event) => {handleImport(event)}} style={{margin: 5}} />
+          <Button label="Download" icon="pi pi-download" className="p-button-warning" style={{margin: 5}} onClick={() => {handleExport()}} />
         </React.Fragment>
     );
 
+    const iconCalcAuto = "pi pi-sync"
+    const iconCalcManual = "pi pi-refresh"
+
+    const items = [
+        {
+            label: 'Auto-Calc',
+            icon: iconCalcAuto,
+            command: () => {
+                setAutoCalc(!autocalc)
+            }
+        },
+        {
+            label: 'Calc',
+            icon: iconCalcManual,
+            command: () => {
+                setAutoCalc(!autocalc)
+            }
+        }
+    ];
+
+    let calcLabel = autocalc ? "Auto-Calc" : "Calc"
+    let calcIcon = autocalc ? iconCalcAuto : iconCalcManual
+
     const rightContents = (
         <React.Fragment>
-            <Button label="Calc" icon="pi pi-sync" className="p-button-warning" style={{margin: 5}} onClick={handleCalc} />
-            <Button label="Auto Layout" icon="pi pi-sitemap" className="p-button-success" style={{margin: 5}} onClick={handleLayout} />
-            <Button label="Clear" icon="pi pi-trash" className="p-button-danger" style={{margin: 5}} onClick={handleClear} />
+            <SplitButton label={calcLabel} icon={calcIcon} model={items} className="p-button-warning" onClick={() => {handleCalc()}} />
+            <Button label="Auto Layout" icon="pi pi-sitemap" className="p-button-success" style={{margin: 5}} onClick={() => {handleLayout()}} />
+            <Button label="Clear" icon="pi pi-trash" className="p-button-danger" style={{margin: 5}} onClick={() => {handleClear()}} />
         </React.Fragment>
     );
 
