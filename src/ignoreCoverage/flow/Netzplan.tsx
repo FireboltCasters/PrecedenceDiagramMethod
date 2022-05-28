@@ -45,6 +45,7 @@ export const Netzplan : FunctionComponent = (props) => {
         setNodes(layoutedElements)
         await sleep(250);
         fitView();
+        setReloadNumber(reloadNumber+1);
     }
 
     async function sleep(milliseconds: number) {
@@ -53,9 +54,7 @@ export const Netzplan : FunctionComponent = (props) => {
 
     async function reset(){
         //@ts-ignore
-        await setNodes(NetzplanHelper.getInitialNodes())
-        //@ts-ignore
-        await setEdges(NetzplanHelper.getInitialEdges())
+        await autoLayoutElements(NetzplanHelper.getInitialNodes(), NetzplanHelper.getInitialEdges())
         await sleep(100);
         calcNetzplan();
         setReloadNumber(reloadNumber+1);
