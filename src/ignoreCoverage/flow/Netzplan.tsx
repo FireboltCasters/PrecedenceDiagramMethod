@@ -41,7 +41,10 @@ export const Netzplan : FunctionComponent = (props) => {
     const onConnect = (params: any) => setEdges((eds) => addEdge({style: NetzplanHelper.defaultEdgeStyle, animated: true ,...params}, eds));
 
     async function autoLayoutElements(passedNodes?: any, passedEdges?: any){
-        let layoutedElements: any = GraphHelper.getLayoutedElements(passedNodes || nodes, passedEdges || edges, GraphHelper.DEFAULT_NODE_WIDTH, NetzplanHelper.NODE_HEIGHT);
+        let useNodes = !!passedNodes ? passedNodes : nodes;
+        let useEdges = !!passedEdges ? passedEdges : edges;
+
+        let layoutedElements: any = GraphHelper.getLayoutedElements(useNodes, useEdges, GraphHelper.DEFAULT_NODE_WIDTH, NetzplanHelper.NODE_HEIGHT);
         setNodes([])
         setReloadNumber(reloadNumber+1);
         await sleep(500);
