@@ -44,11 +44,20 @@ export const Netzplan : FunctionComponent = (props) => {
         let useNodes = !!passedNodes ? passedNodes : nodes;
         let useEdges = !!passedEdges ? passedEdges : edges;
 
+        console.log("useNodes:");
+        console.log(useNodes);
+
         let layoutedElements: any = GraphHelper.getLayoutedElements(useNodes, useEdges, GraphHelper.DEFAULT_NODE_WIDTH, NetzplanHelper.NODE_HEIGHT);
+
+        console.log("layoutedElements")
+        console.log(layoutedElements)
+
         setNodes([])
+        setEdges([])
         setReloadNumber(reloadNumber+1);
         await sleep(500);
         setNodes(layoutedElements)
+        setEdges(useEdges)
         await sleep(500);
         fitView();
         setReloadNumber(reloadNumber+1);
@@ -61,7 +70,7 @@ export const Netzplan : FunctionComponent = (props) => {
     async function reset(){
         //@ts-ignore
         await autoLayoutElements(NetzplanHelper.getInitialNodes(), NetzplanHelper.getInitialEdges())
-        await sleep(100);
+        await sleep(250);
         calcNetzplan();
         setReloadNumber(reloadNumber+1);
     }
