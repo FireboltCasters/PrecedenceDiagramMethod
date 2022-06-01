@@ -1,6 +1,4 @@
-<h2 align="center">
-    precedence-diagram-method
-</h2>
+<h1><a href="https://github.com/FireboltCasters/Observatory"><img src="https://raw.githubusercontent.com/FireboltCasters/PrecedenceDiagramMethod/main/logo.png" width="50" heigth="50" /></a><a href="https://github.com/FireboltCasters/Observatory">precedence-diagram-method</a></h1><h2>A library to calculate the critical path in an given precedence-diagram</h2>
 
 <p align="center">
   <a href="https://badge.fury.io/js/precedence-diagram-method.svg"><img src="https://badge.fury.io/js/precedence-diagram-method.svg" alt="npm package" /></a>
@@ -27,10 +25,6 @@
   <a href="https://sonarcloud.io/dashboard?id=FireboltCasters_PrecedenceDiagramMethod"><img src="https://sonarcloud.io/api/project_badges/measure?project=FireboltCasters_PrecedenceDiagramMethod&metric=sqale_index" alt="Technical Debt" /></a>
   <a href="https://sonarcloud.io/dashboard?id=FireboltCasters_PrecedenceDiagramMethod"><img src="https://sonarcloud.io/api/project_badges/measure?project=FireboltCasters_PrecedenceDiagramMethod&metric=vulnerabilities" alt="Vulnerabilities" /></a>
 </p>
-
-## About
-
-A library to calculate the critical path in an given precedence-diagram.
 
 ## Demo
 
