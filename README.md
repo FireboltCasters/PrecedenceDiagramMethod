@@ -34,7 +34,9 @@ A library to calculate the critical path in an given precedence-diagram.
 
 ## Demo
 
-https://fireboltcasters.github.io/PrecedenceDiagramMethod/
+Live Demo: https://fireboltcasters.github.io/PrecedenceDiagramMethod/
+
+<img src="https://raw.githubusercontent.com/FireboltCasters/PrecedenceDiagramMethod/main/Demo.gif" alt="Coverage" />
 
 ## Installtion
 
