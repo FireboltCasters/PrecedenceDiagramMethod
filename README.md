@@ -8,7 +8,6 @@
   <a href="https://img.shields.io/github/last-commit/FireboltCasters/PrecedenceDiagramMethod?logo=git"><img src="https://img.shields.io/github/last-commit/FireboltCasters/PrecedenceDiagramMethod?logo=git" alt="last commit" /></a>
   <a href="https://www.npmjs.com/package/precedence-diagram-method"><img src="https://img.shields.io/npm/dm/precedence-diagram-method.svg" alt="downloads week" /></a>
   <a href="https://www.npmjs.com/package/precedence-diagram-method"><img src="https://img.shields.io/npm/dt/precedence-diagram-method.svg" alt="downloads total" /></a>
-  <a href="https://github.com/FireboltCasters/precedence-diagram-method"><img src="https://shields.io/github/languages/code-size/FireboltCasters/precedence-diagram-method" alt="size" /></a>
   <a href="https://github.com/google/gts" alt="Google TypeScript Style"><img src="https://img.shields.io/badge/code%20style-google-blueviolet.svg"/></a>
   <a href="https://shields.io/" alt="Google TypeScript Style"><img src="https://img.shields.io/badge/uses-TypeScript-blue.svg"/></a>
   <a href="https://github.com/marketplace/actions/lint-action"><img src="https://img.shields.io/badge/uses-Lint%20Action-blue.svg"/></a>
