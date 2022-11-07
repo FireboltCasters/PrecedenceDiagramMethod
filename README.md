@@ -14,6 +14,7 @@
 
 <p align="center">
   <a href="https://github.com/FireboltCasters/PrecedenceDiagramMethod/actions/workflows/npmPublish.yml"><img src="https://github.com/FireboltCasters/PrecedenceDiagramMethod/actions/workflows/npmPublish.yml/badge.svg" alt="Npm publish" /></a>
+    <a href="https://jessemillar.com/r/man-hours"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fmh.jessemillar.com%2Fhours%3Frepo%3Dhttps%3A%2F%2Fgithub.com%2FFireboltCasters%2FPrecedenceDiagramMethod" alt="size" /></a>
   <a href="https://sonarcloud.io/dashboard?id=FireboltCasters_PrecedenceDiagramMethod"><img src="https://sonarcloud.io/api/project_badges/measure?project=FireboltCasters_PrecedenceDiagramMethod&metric=alert_status" alt="Quality Gate" /></a>
   <a href="https://sonarcloud.io/dashboard?id=FireboltCasters_PrecedenceDiagramMethod"><img src="https://sonarcloud.io/api/project_badges/measure?project=FireboltCasters_PrecedenceDiagramMethod&metric=bugs" alt="Bugs" /></a>
   <a href="https://sonarcloud.io/dashboard?id=FireboltCasters_PrecedenceDiagramMethod"><img src="https://sonarcloud.io/api/project_badges/measure?project=FireboltCasters_PrecedenceDiagramMethod&metric=coverage" alt="Coverage" /></a>
