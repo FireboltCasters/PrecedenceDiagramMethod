@@ -129,7 +129,7 @@ export class NetzplanNodeEditable extends Component {
 
     onChangeDuration(event){
         this.setState({
-            duration: event.value
+            duration: parseInt(event.value+"")
         });
     }
 
@@ -139,7 +139,7 @@ export class NetzplanNodeEditable extends Component {
     }
 
     renderDurationInput(){
-        return <InputNumber onBlur={this.onBlurDuration.bind(this)} inputStyle={NetzplanNodeEditable.inputStyle} value={this.state.duration} onChange={this.onChangeDuration.bind(this)}/>;
+        return <InputText onBlur={this.onBlurDuration.bind(this)} inputStyle={NetzplanNodeEditable.inputStyle} value={this.state.duration} onChange={this.onChangeDuration.bind(this)}/>;
     }
 
 
