@@ -38,7 +38,7 @@ export default function CustomEdge({
                 style={style}
                 className="react-flow__edge-path"
                 d={edgePath}
-                markerEnd={markerEnd}
+                markerEnd={{markerEnd}}
             />
             <foreignObject
                 width={foreignObjectSize}

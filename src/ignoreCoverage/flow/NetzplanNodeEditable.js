@@ -139,7 +139,7 @@ export class NetzplanNodeEditable extends Component {
     }
 
     renderDurationInput(){
-        return <InputText onBlur={this.onBlurDuration.bind(this)} inputStyle={NetzplanNodeEditable.inputStyle} value={this.state.duration} onChange={this.onChangeDuration.bind(this)}/>;
+        return <InputText onBlur={this.onBlurDuration.bind(this)} style={NetzplanNodeEditable.inputStyle} inputStyle={NetzplanNodeEditable.inputStyle} value={this.state.duration} onChange={this.onChangeDuration.bind(this)}/>;
     }
 
 
