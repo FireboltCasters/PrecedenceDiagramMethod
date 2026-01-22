@@ -29,8 +29,6 @@ export default class NetzplanHelper{
             edge.style = NetzplanHelper.defaultEdgeStyle
             edge.animated = true;
             edge.type = 'buttonedge';
-            // add arrowheads to all edges
-            edge.arrowHeadType = 'arrowclosed';
         }
         return edges;
     }
