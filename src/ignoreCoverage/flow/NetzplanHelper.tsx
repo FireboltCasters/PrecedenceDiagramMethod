@@ -29,11 +29,7 @@ export default class NetzplanHelper{
             edge.style = NetzplanHelper.defaultEdgeStyle
             edge.animated = true;
             edge.type = 'buttonedge';
-            edge.type = "arrow";
-            // ensure arrowheads on edges
-            // ArrowHeadType is from react-flow-renderer v10
-            // this makes React Flow pass a proper markerEnd to our custom edge
-            //edge.arrowHeadType =
+            edge.arrowHeadType = 'arrowclosed';
         }
         return edges;
     }

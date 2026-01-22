@@ -15,6 +15,7 @@ export default function CustomEdge({
                                        targetPosition,
                                        style = {},
                                        markerEnd,
+                                       arrowHeadType,
                                    }, removeEdge) {
     const edgePath = getBezierPath({
         sourceX,
@@ -31,14 +32,22 @@ export default function CustomEdge({
         targetY,
     });
 
+    const markerId = `edge-arrow-${id}`;
+    const strokeColor = (style && style.stroke) ? style.stroke : '#222';
+
     return (
         <>
+            <defs>
+                <marker id={markerId} markerWidth="16" markerHeight="16" viewBox="0 0 16 16" refX="13" refY="8" orient="auto" markerUnits="userSpaceOnUse">
+                    <path d="M0,0 L16,8 L0,16 L3,8 z" fill={strokeColor} />
+                </marker>
+            </defs>
             <path
                 id={id}
                 style={style}
                 className="react-flow__edge-path"
                 d={edgePath}
-                markerEnd={{markerEnd}}
+                markerEnd={`url(#${markerId})`}
             />
             <foreignObject
                 width={foreignObjectSize}

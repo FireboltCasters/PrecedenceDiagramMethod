@@ -44,7 +44,8 @@ export const Netzplan : FunctionComponent = (props) => {
             let nextEdges = addEdge({
                 style: NetzplanHelper.defaultEdgeStyle,
                 animated: true, ...params,
-                type: 'buttonedge'
+                type: 'buttonedge',
+                arrowHeadType: 'arrowclosed'
             }, eds);
             checkAutoCalc(undefined, nextEdges)
             return nextEdges;
