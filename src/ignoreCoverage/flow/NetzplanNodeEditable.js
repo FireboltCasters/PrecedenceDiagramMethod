@@ -129,7 +129,7 @@ export class NetzplanNodeEditable extends Component {
 
     onChangeDuration(event){
         this.setState({
-            duration: parseInt(event.value+"")
+            duration: parseInt(event.target.value)
         });
     }
 
